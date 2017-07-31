@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="{{ sails.config.project.author }}">
+    <!--meta name="description" content="{{ sails.config.project.description }}"-->
+    
+    <meta name="description" content="Ymple, open source , ecommerce, e-commerce, sails.js, node.js">
+    <meta name="keywords" content="ymple, ecommerce, e-commerce, node.js,sailsjs, Nodejs, Sailsjs">
+
+    <title></title>
+
+    <!--
+        Stylesheets and Preprocessors
+        ==============================
+
+        You can always bring in CSS files manually with `<link>` tags, or asynchronously
+        using a solution like AMD (RequireJS).  Or, if you like, you can take advantage
+        of Sails' conventional asset pipeline (boilerplate Gruntfile).
+
+        By default, stylesheets from your `assets/styles` folder are included
+        here automatically (between STYLES and STYLES END). Both CSS (.css) and LESS (.less)
+        are supported. In production, your styles will be minified and concatenated into
+        a single file.
+
+        To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
+        For example, here are a few things you could do:
+
+            + Change the order of your CSS files
+            + Import stylesheets from other directories
+            + Use a different or additional preprocessor, like SASS, SCSS or Stylus
+    -->
+    <!--STYLES-->
+    <link rel="stylesheet" href="/styles/dependencies/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/dependencies/basic.css">
+    <link rel="stylesheet" href="/styles/dependencies/bootstrapValidator.min.css">
+    <link rel="stylesheet" href="/styles/dependencies/carousel.css">
+    <link rel="stylesheet" href="/styles/dependencies/dropzone.css">
+    <link rel="stylesheet" href="/styles/dependencies/font-awesome.min.css">
+    <link rel="stylesheet" href="/styles/dependencies/ymple.css">
+    <!--STYLES END-->
+</head>
+
+<body>
+<script src="/js/dependencies/jquery-2.1.1.min.js"></script>
+
+<!--
+    Client-side Templates
+    ========================
+
+    HTML templates are important prerequisites of modern, rich client applications.
+    To work their magic, frameworks like Backbone, Angular, Ember, and Knockout require
+    that you load these templates client-side.
+
+    By default, your Gruntfile is configured to automatically load and precompile
+    client-side JST templates in your `assets/templates` folder, then
+    include them here automatically (between TEMPLATES and TEMPLATES END).
+
+    To customize this behavior to fit your needs, just edit `tasks/pipeline.js`.
+    For example, here are a few things you could do:
+
+        + Import templates from other directories
+        + Use a different template engine (handlebars, jade, dust, etc.)
+        + Internationalize your client-side templates using a server-side
+          stringfile before they're served.
+-->
+
+<!--TEMPLATES-->
+
+<!--TEMPLATES END-->
+
+
+<!--
+
+  Client-side Javascript
+  ========================
+
+  You can always bring in JS files manually with `script` tags, or asynchronously
+  on the client using a solution like AMD (RequireJS).  Or, if you like, you can
+  take advantage of Sails' conventional asset pipeline (boilerplate Gruntfile).
+
+  By default, files in your `assets/js` folder are included here
+  automatically (between SCRIPTS and SCRIPTS END).  Both JavaScript (.js) and
+  CoffeeScript (.coffee) are supported. In production, your scripts will be minified
+  and concatenated into a single file.
+
+  To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
+  For example, here are a few things you could do:
+
+      + Change the order of your scripts
+      + Import scripts from other directories
+      + Use a different preprocessor, like TypeScript
+
+-->
+
+
+<!--SCRIPTS-->
+<script src="/js/dependencies/sails.io.js"></script>
+<script src="/js/dependencies/jquery-2.1.1.min.js"></script>
+<script src="/js/dependencies/bootstrap.min.js"></script>
+<script src="/js/dependencies/dropzone.min.js"></script>
+<script src="/js/dependencies/icheck.min.js"></script>
+<script src="/js/dependencies/jquery.fs.selecter.min.js"></script>
+<script src="/js/dependencies/jquery.fs.stepper.min.js"></script>
+<script src="/js/dependencies/jquery.ui.widget.js"></script>
+<script src="/js/dependencies/jquery.validate.min.js"></script>
+<script src="/js/dependencies/ymple.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">
+
+  function requestCall(url,data,fnSuccess,fnError){
+        $.ajax({
+            type:'POST',
+            url:url,
+            contentType:"application/json",
+            dataType:'json',
+            crossDomain:true,
+            data:JSON.stringify(data),
+            success:fnSuccess,
+            error: fnError
+        });
+    }
+     
+    function callReceipts(cart_receipt) 
+    {
+        var url = 'http://192.168.100.249:8061/receipts';
+
+        var fnSuccess=function (dataReceived) {
+          if(dataReceived) {
+              console.log(dataReceived);
+          }else{
+              alert("Request failed")
+          }
+        };
+        var fnError=function (e) { 
+            console.log(e);
+        };
+        data = {
+           "requestId":"296a3f7f-170a-49df-bb42-a293e40d3d7d",
+           "tenantId":"64dc4da5-f8dc-46f4-a457-c50551555e96",
+           "crmData":{
+                "crmId":"1234567890",
+                "firstName":"John",
+                "lastName":"Smith",
+                "maskedPan":"400139**********4734"
+            },
+            "optInFlag":"true",
+            "email":"john.smith@mycompany.com",
+            "phone":"415-123-2345",
+            "receipt":cart_receipt
+        };
+
+        requestCall(url,data,fnSuccess,fnError);
+    }
+</script>
+<% if (sails.config.project.analytics.hasOwnProperty('id')) {%>
+
+<% } %>
+</body>
+</html>

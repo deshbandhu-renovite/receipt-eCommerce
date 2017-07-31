@@ -1,0 +1,39 @@
+<% include ../../commun/library.ejs %>
+<% include ../templates.navbar.ejs %>
+
+<div class="container">
+    <h3 class="title-green"><%= __('Order has been placed Successfully ') %> </h3>
+    <ul>
+        <% cart.forEach(function(cartItem){ %>
+        Name: <%= cartItem.Name %> <br>
+        Price <%= cartItem.Price %> <br>
+        Quantity: <%= cartItem.quantity %> <br>
+        Order id : <%= orderReference%>
+        
+        <% }); %>
+    </ul>
+
+</div>
+
+<script>
+$(document).ready(function () 
+{
+ 	var result = '<%=JSON.stringify(cart)%>';
+    result = result.replace(/&#34;/g,'"');
+
+    var order_receipt = {
+        userRef: "<%=user.id%>",
+        ruid: "testruild",
+        order: true,
+        orderID: '<%= orderReference%>',
+        cart : result,
+    }
+    var dataSource = JSON.stringify(order_receipt);
+    var cart_receipt = window.btoa(dataSource);
+
+    callReceipts(cart_receipt);
+});
+
+</script>
+
+
