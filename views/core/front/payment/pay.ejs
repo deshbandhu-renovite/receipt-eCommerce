@@ -16,11 +16,22 @@
 </div>
 
 <script>
+var result = '<%=JSON.stringify(cart)%>';
+result = result.replace(/&#34;/g,'"');
+var resultData = JSON.parse(result);
+var resultLength = resultData.length;
+var transactionId = '<%= orderReference%>';
+var subTotal=0;
+var productList = [];
+for(i=0;i<resultLength;i++)
+{
+    productList.push({productId: resultData[i].id, amount: resultData[i].Price, quantity: resultData[i].quantity, discount: ""});
+    subTotal+= parseInt(resultData[i].Price);
+}
+/*
 $(document).ready(function () 
 {
- 	var result = '<%=JSON.stringify(cart)%>';
-    result = result.replace(/&#34;/g,'"');
-
+    console.log(result);
     var order_receipt = {
         userRef: "<%=user.id%>",
         ruid: "testruild",
@@ -33,7 +44,24 @@ $(document).ready(function ()
 
     callReceipts(cart_receipt);
 });
+*/
+</script>
 
+<script type="text/javascript">
+    
+    var tdxPurchaseEvent = {
+        "tdxPartnerId": "47530",//Retailer ID Key (should not be changed)
+        "userId":      "718781281", //Retailer user ID (required)
+        "transactionId":  transactionId, //purchase transaction id (required)
+        "subTotal":    subTotal, //order subtotal (required)
+        "discount":    "" //discount amount (optional)
+    };
+    tdxPurchaseEvent.productList = [];
+    /** add purchased products to the productList array* productId -retailer product id (alphanumeric, required), * amount -order line amount (subtotal) -numeric (required)* quantity -order line quantity -integer number [1-*] (required)* discount -order line discount -numeric [1-*] (required)*/
+    
+    tdxPurchaseEvent.productList.push(productList);
+    
+    (function (e) {var n = document, r, i, p=/\w+/.exec(window.location.protocol)[0], s = (!p? "http" : p) + "://localhost:1338/js/tracking.js";i = n.createElement("script"), i.type = "text/javascript", i.async = true,i.src = s,r = n.getElementsByTagName("script")[0],r.parentNode.insertBefore(i, r),i.readyState ? i.onreadystatechange = function () {if (i.readyState === "loaded" || i.readyState === "complete") i.onreadystatechange = null} : i.onload = function () {try {tdx.tag.trackPurchase(tdxPurchaseEvent);} catch (t) { }}})(function () { });
 </script>
 
 
