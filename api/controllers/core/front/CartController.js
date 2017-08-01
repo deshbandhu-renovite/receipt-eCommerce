@@ -209,7 +209,7 @@ function AddToSessionCart (session, productData, quantity) {
     var isAlreadyExist = false;
 
     for ( var i in cart ) {
-      if ( cart[i].id == id ) 
+      if (typeof cart[i].id == undefined &&  cart[i].id == id ) 
       {
         session.cart[i].quantity += parseInt(quantity);
         isAlreadyExist = true;
